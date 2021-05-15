@@ -26,8 +26,10 @@ for helper in range(1, 2):  ###test : 10page까지
         if page == 11: #page는  까지밖에 없음.
             break
 
-        # keyword: sw교육 (query=sw교육)
-        url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=sw%EA%B5%90%EC%9C%A1&sort=0&photo=0&field=0&pd=0&ds=&de=&cluster_rank=52&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:all,a:all&start={}'.format(page)
+        # keyword: sw교육 (query=sw교육)/ sort=0/ ds=시작날짜/ de=끝날짜/ start=10단위로 증가(한페이지 10개)
+        start = (page - 1) * 10 + 1
+        url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=sw교육&sort=0&ds=&de=&nso=so:r,p:all,a:all&start={}'.format(start)
+        #https://search.naver.com/search.naver?where=news&sm=tab_pge&query=sw교육&sort=0&photo=0&field=0&pd=0&ds=&de=&cluster_rank=128&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:all,a:all&start=11
         driver.get(url)
         print("current page : ", page)
 
@@ -59,6 +61,7 @@ for helper in range(1, 2):  ###test : 10page까지
             content = soup.find("div", attrs={"id":"articleBodyContents"})
             data = content.text.strip()
             data = data.replace("\n", "") # \n 문자도 제거
+            data = data[61:] # 주석 제거: // flash 오류를 우회하기 위한 함수 추가function _flash_removeCallback() {}
             print('본문 내용 : ', data)
 
             # titles 추가학기.
