@@ -10,7 +10,7 @@ import pandas as pd
 
 #for helper in range(1, 43): #100page 단위 -> 잘 끊김
 #for helper in range(1, 85): #50page 단위로
-for helper in range(1, 3):  ###test : 10page까지
+for helper in range(1, 2):  ###test : 10page까지
     driver = webdriver.Chrome("./chromedriver")
     
     titles = []
@@ -38,13 +38,15 @@ for helper in range(1, 3):  ###test : 10page까지
         # 현 page에서 네이버뉴스 요소에 접근
         lists = soup.find("div", attrs={"class": "group_news"})
         a_lists = lists.find_all("a", attrs={"class": "info"})  # 현재 페이지의 뉴스 중 모든 네이버뉴스 a tag만 가져옴
-    
+        # -> 언론사 링크까지 포함되서 수집됨..(a.info.press라서)
+
         # path를 추가하기 전에 현재 paths 리스트에 몇개가 들어있는지 확인한다 => 2 page가 되면 paths 리스트의 7번 index부터 읽어야하기 때문
         path_len = len(paths)
         
         for a in a_lists: # 현재 page 내에서 각 네이버뉴스의 path를 파싱하여 paths 배열에 저장.
-            # print(a.attrs["href"]
-            paths.append(a.attrs["href"])  # 각 네이버뉴스의 path를 저장.
+            if a.attrs["href"].startswith("https://news.naver.com"): # 네이버 뉴스 링크만 저장
+                print(a.attrs["href"])
+                paths.append(a.attrs["href"])  # 각 네이버뉴스의 path를 저장.
 
         new_paths = paths[path_len:] # page 별로 해당하는 path만 읽어야하므로 => 2 page가 되면 새로운 index부터 읽어야하기 때문
         print("new_paths : ", new_paths)
@@ -54,7 +56,7 @@ for helper in range(1, 3):  ###test : 10page까지
             soup = bs(driver.page_source, 'html.parser') # 각 url에 대하여 soup 객체를 새로 생성한다.
 
             # contents 추가하기.
-            content = soup.find("div", attrs={"class":"articleBodyContents"})
+            content = soup.find("div", attrs={"id":"articleBodyContents"})
             data = content.text.strip()
             data = data.replace("\n", "") # \n 문자도 제거
             print('본문 내용 : ', data)
