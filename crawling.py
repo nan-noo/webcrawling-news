@@ -10,7 +10,7 @@ import pandas as pd
 
 #for helper in range(1, 43): #100page 단위 -> 잘 끊김
 #for helper in range(1, 85): #50page 단위로
-for helper in range(1, 2):  ###test : 10page까지
+for helper in range(1, 3):  ###test : 10page까지
     driver = webdriver.Chrome("./chromedriver")
     
     titles = []
