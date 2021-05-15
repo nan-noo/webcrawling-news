@@ -27,7 +27,7 @@ for helper in range(1, 3):  ###test : 10page까지
         # keyword: sw교육 (query=sw교육)/ sort=0/ ds=시작날짜/ de=끝날짜/ start=10단위로 증가(한페이지 10개)
         start = (page - 1) * 10 + 1
         url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=sw교육&sort=0&ds=&de=&nso=so:r,p:all,a:all&start={}'.format(start)
-        #https://search.naver.com/search.naver?where=news&sm=tab_pge&query=sw교육&sort=0&photo=0&field=0&pd=0&ds=&de=&cluster_rank=128&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:all,a:all&start=11
+
         driver.get(url)
         print("current page : ", page)
 
@@ -45,14 +45,12 @@ for helper in range(1, 3):  ###test : 10page까지
         
         for a in a_lists: # 현재 page 내에서 각 네이버뉴스의 path를 파싱하여 paths 배열에 저장.
             if a.attrs["href"].startswith("https://news.naver.com"): # 네이버 뉴스 링크만 저장
-                print(a.attrs["href"])
                 paths.append(a.attrs["href"])  # 각 네이버뉴스의 path를 저장.
 
         new_paths = paths[path_len:] # page 별로 해당하는 path만 읽어야하므로 => 2 page가 되면 새로운 index부터 읽어야하기 때문
         print("new_paths : ", new_paths)
         for path in new_paths: # 현재 page의 모든 네이버뉴스의 해당 url에 접속하여 content를 파싱.
-            url = path
-            driver.get(url)
+            driver.get(path)
             soup = bs(driver.page_source, 'html.parser') # 각 url에 대하여 soup 객체를 새로 생성한다.
 
             # contents 추가하기.
@@ -83,7 +81,7 @@ for helper in range(1, 3):  ###test : 10page까지
     print("contents : ", contents)
     print("dates : ", dates)
 
-    my_dictionary = {"paths": paths, "title": titles, "date": dates, "contents": contents}
+    my_dictionary = {"path": paths, "title": titles, "date": dates, "content": contents}
     data = pd.DataFrame(my_dictionary)  # 전체 데이터를 긁은 list인 total을 dataframe으로 변환시켜주면서 각 column의 이름을 부여해줍니다.
 
     str_i = str(i)
