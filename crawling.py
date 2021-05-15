@@ -8,8 +8,6 @@ import pandas as pd
 
 # test: 10 page까지 돌려보기 
 
-#for helper in range(1, 43): #100page 단위 -> 잘 끊김
-#for helper in range(1, 85): #50page 단위로
 for helper in range(1, 3):  ###test : 10page까지
     driver = webdriver.Chrome("./chromedriver")
     
@@ -62,7 +60,7 @@ for helper in range(1, 3):  ###test : 10page까지
             data = content.text.strip()
             data = data.replace("\n", "") # \n 문자도 제거
             data = data[61:] # 주석 제거: // flash 오류를 우회하기 위한 함수 추가function _flash_removeCallback() {}
-            print('본문 내용 : ', data)
+            #print('본문 내용 : ', data)
 
             # titles 추가학기.
             title = soup.find("h3", attrs={"id":"articleTitle"})
