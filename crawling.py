@@ -5,10 +5,12 @@ import pandas as pd
 
 # sw교육 키워드로 검색한 네이버 뉴스의 content, date, title, path 수집 
 # 여기서 수집한 path data는 crawling_comments.py에서 활용
+# 네이버 검색은 최상의 검색결과 품질을 위해 뉴스 검색결과를 4,000건까지 제공합니다. -> 400page까지 제공됨
 
 # test: 10 page까지 돌려보기 
 
-for helper in range(1, 3):  ###test : 10page까지
+#for helper in range(1, 3):  ###test : 10page까지
+for helper in range(1, 9):
     driver = webdriver.Chrome("./chromedriver")
     
     titles = []
@@ -18,11 +20,11 @@ for helper in range(1, 3):  ###test : 10page까지
     url = ""
 
     #i = (50 * (helper - 1)) + 1
-    i = (5 * (helper - 1)) + 1
-    for page in range(i, 5+i): ### test : 5page씩
-    #for page in range(i, 1+i): ###test
-        if page == 11: #page는  까지밖에 없음.
-            break
+    i = (50 * (helper - 1)) + 1
+    #for page in range(i, 5+i): ### test : 5page씩
+    for page in range(i, 50+i): # 50page 단위로 수집
+        # if page == 11: #page는  400까지밖에 없음.
+        #     break
 
         # keyword: sw교육 (query=sw교육)/ sort=0/ ds=시작날짜/ de=끝날짜/ start=10단위로 증가(한페이지 10개)
         start = (page - 1) * 10 + 1
