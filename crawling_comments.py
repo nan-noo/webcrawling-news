@@ -4,7 +4,7 @@ from selenium import webdriver
 import pandas as pd
 
 # crawling.py에서 수집한 data에서 path 사용
-# 기사 댓글(내용, 좋아요 수, 싫어요 수) 수집 및 반응(좋아요, 훈훈해요, 슬퍼요, 화나요, 후속기사원해요) 수집
+# 기사 댓글(내용, 좋아요 수, 싫어요 수), 댓글 수 수집 및 반응(좋아요, 훈훈해요, 슬퍼요, 화나요, 후속기사원해요) 수집
 # result format: columns - path/title/reaction/comments
 
 for i in range(1,10,5): ### test: 5page단위
