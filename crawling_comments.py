@@ -18,6 +18,7 @@ for i in range(1,10,5): ### test: 5page단위
 
     reactions = []
     comments = []
+    numComments = []
     #print("current file: " + str(i) +"_" + str(i+49))
     print("current file: " + str(i) +"_" + str(i+4)) ## test
 
@@ -64,6 +65,7 @@ for i in range(1,10,5): ### test: 5page단위
         # reactions, comments에 append
         reactions.append(reaction)
         comments.append(comment)
+        numComments.append(len(comment))
     
     driver.close()
     # 최종 값
@@ -71,8 +73,10 @@ for i in range(1,10,5): ### test: 5page단위
     print("titles : ", titles)
     print("reactions : ", reactions)
     print("comments : ", comments)
+    print("number of comments: ", numComments)
 
-    my_dictionary = {"path": paths, "title": titles, "reaction": reactions, "comments": comments}
+    my_dictionary = {"path": paths, "title": titles, "reaction": reactions, \
+        "number of comments": numComments, "comments": comments}
     data = pd.DataFrame(my_dictionary)  # 전체 데이터를 긁은 list인 total을 dataframe으로 변환시켜주면서 각 column의 이름을 부여해줍니다.
 
     str_i = str(i)
