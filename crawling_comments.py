@@ -7,20 +7,20 @@ import pandas as pd
 # 기사 댓글(내용, 좋아요 수, 싫어요 수), 댓글 수 수집 및 반응(좋아요, 훈훈해요, 슬퍼요, 화나요, 후속기사원해요) 수집
 # result format: columns - path/title/reaction/comments
 
-for i in range(1,10,5): ### test: 5page단위
-#for i in range(1,400,50): ### 50page단위, 400page까지 있음
+#for i in range(1,10,5): ### test: 5page단위
+for i in range(1,400,50): ### 50page단위, 400page까지 있음
     driver = webdriver.Chrome("./chromedriver")
 
-    data = pd.read_excel("./crawling_data/" + str(i) +"_" + str(i+4) + ".xlsx") ## test
-    #data = pd.read_excel("./crawling_data/" + str(i) +"_" + str(i+49) + ".xlsx")
+    #data = pd.read_excel("./crawling_data/" + str(i) +"_" + str(i+4) + ".xlsx") ## test
+    data = pd.read_excel("./crawling_data/" + str(i) +"_" + str(i+49) + ".xlsx")
     paths = data["path"]
     titles = data["title"]
 
     reactions = []
     comments = []
     numComments = []
-    #print("current file: " + str(i) +"_" + str(i+49))
-    print("current file: " + str(i) +"_" + str(i+4)) ## test
+    print("current file: " + str(i) +"_" + str(i+49))
+    #print("current file: " + str(i) +"_" + str(i+4)) ## test
 
     for path in paths:
         driver.get(path)
@@ -42,14 +42,13 @@ for i in range(1,10,5): ### test: 5page단위
             driver.find_element_by_css_selector('a.u_cbox_btn_view_comment').click()
             time.sleep(1)
 
-            if total_num_repl > 20:
-                # 더보기 계속 클릭
-                while True:
-                    try:
-                        driver.find_element_by_css_selector('a.u_cbox_btn_more').click()
-                        time.sleep(1)
-                    except:
-                        break;
+            # 더보기 계속 클릭
+            while True:
+                try:
+                    driver.find_element_by_css_selector('a.u_cbox_btn_more').click()
+                    time.sleep(1)
+                except:
+                    break;
 
             cbox_contents = driver.find_elements_by_css_selector("span.u_cbox_contents") # 댓글 내용
             cbox_recomms = driver.find_elements_by_css_selector("em.u_cbox_cnt_recomm") # 댓글의 좋아요 수
@@ -69,19 +68,19 @@ for i in range(1,10,5): ### test: 5page단위
     
     driver.close()
     # 최종 값
-    print("paths: ", paths)
-    print("titles : ", titles)
-    print("reactions : ", reactions)
-    print("comments : ", comments)
+    print("paths: ", len(paths))
+    print("titles : ", len(titles))
+    print("reactions : ", len(reactions))
+    print("comments : ", len(comments))
     print("number of comments: ", numComments)
 
     my_dictionary = {"path": paths, "title": titles, "reaction": reactions, \
-        "number of comments": numComments, "comments": comments}
+        "numberOfComments": numComments, "comments": comments}
     data = pd.DataFrame(my_dictionary)  # 전체 데이터를 긁은 list인 total을 dataframe으로 변환시켜주면서 각 column의 이름을 부여해줍니다.
 
     str_i = str(i)
-    # str_i2 = str(i+49)
-    str_i2 = str(i+4) ### test
+    str_i2 = str(i+49)
+    #str_i2 = str(i+4) ### test
     datatitle = str_i + '_' + str_i2
     # datatitle = input("Please set the title of this excel file : ")  # 긁어온 데이터를 저장할 xlsx 파일의 이름을 지정해줍니다.
     data.to_excel("crawling_data/comments" + datatitle + ".xlsx", engine="xlsxwriter")

@@ -9,8 +9,8 @@ import pandas as pd
 
 # test: 10 page까지 돌려보기 
 
-for helper in range(1, 3):  ###test : 10page까지
-#for helper in range(1, 9):
+#for helper in range(1, 3):  ###test : 10page까지
+for helper in range(1, 9):
     driver = webdriver.Chrome("./chromedriver")
     
     titles = []
@@ -20,16 +20,16 @@ for helper in range(1, 3):  ###test : 10page까지
     press = []
     url = ""
 
-    i = (5 * (helper - 1)) + 1 ### test
-    #i = (50 * (helper - 1)) + 1
-    for page in range(i, 5+i): ### test : 5page씩
-    #for page in range(i, 50+i): # 50page 단위로 수집
-        if page == 11: #page는  400까지밖에 없음.
-             break
+    #i = (5 * (helper - 1)) + 1 ### test
+    i = (50 * (helper - 1)) + 1
+    #for page in range(i, 5+i): ### test : 5page씩
+    for page in range(i, 50+i): # 50page 단위로 수집
+        #if page == 11: #page는  400까지밖에 없음.
+        #     break
 
         # keyword: sw교육 (query=sw교육)/ sort=1(최신순)/ ds=시작날짜/ de=끝날짜/ start=10단위로 증가(한페이지 10개)
         start = (page - 1) * 10 + 1
-        url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=sw교육&sort=0&ds=&de=&nso=so:r,p:all,a:all&start={}'.format(start)
+        url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=sw교육&sort=1&ds=&de=&nso=so:r,p:all,a:all&start={}'.format(start)
 
         driver.get(url)
         print("current page : ", page)
@@ -100,7 +100,8 @@ for helper in range(1, 3):  ###test : 10page까지
     data = pd.DataFrame(my_dictionary)  # 전체 데이터를 긁은 list인 total을 dataframe으로 변환시켜주면서 각 column의 이름을 부여해줍니다.
 
     str_i = str(i)
-    str_i2 = str(i+4)
+    # str_i2 = str(i+4) ### test
+    str_i2 = str(i+49)
     datatitle = str_i + '_' + str_i2
     # datatitle = input("Please set the title of this excel file : ")  # 긁어온 데이터를 저장할 xlsx 파일의 이름을 지정해줍니다.
     data.to_excel("crawling_data/" + datatitle + ".xlsx", engine="xlsxwriter")
