@@ -7,7 +7,15 @@ import pandas as pd
 # 여기서 수집한 path data는 crawling_comments.py에서 활용
 # 네이버 검색은 최상의 검색결과 품질을 위해 뉴스 검색결과를 4,000건까지 제공합니다. -> 400page까지 제공됨
 
-# test: 10 page까지 돌려보기 
+# test: 10 page까지 돌려보기
+
+# https://search.naver.com/search.naver?where=news&query=인공지능교육&sm=tab_opt&sort=1&photo=0&field=0&pd=3&ds=2021.07.06&de=2018.01.01&docid=&related=0&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so%3Add%2Cp%3Afrom20180101to20210706&is_sug_officeid=0
+
+query = "인공지능교육"
+sort = "1" # 최신순
+dateStart = "2020.07.06" # 최신 날짜
+dateEnd = "2018.01.01"
+
 
 #for helper in range(1, 3):  ###test : 10page까지
 for helper in range(1, 9):
@@ -29,7 +37,7 @@ for helper in range(1, 9):
 
         # keyword: sw교육 (query=sw교육)/ sort=1(최신순)/ ds=시작날짜/ de=끝날짜/ start=10단위로 증가(한페이지 10개)
         start = (page - 1) * 10 + 1
-        url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=sw교육&sort=1&ds=&de=&nso=so:r,p:all,a:all&start={}'.format(start)
+        url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=' + query +'&sort=' + sort + '&ds=' + dateStart + '&de=' + dateEnd + '&nso=so%3Add%2Cp%3Afrom' + dateEnd.replace('.', '') + 'to' + dateStart.replace('.', '') + '&start={}'.format(start)
 
         driver.get(url)
         print("current page : ", page)
