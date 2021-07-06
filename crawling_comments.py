@@ -23,6 +23,7 @@ for i in range(1,400,50): ### 50page단위, 400page까지 있음
     #print("current file: " + str(i) +"_" + str(i+4)) ## test
 
     for path in paths:
+        print("current path: ", path)
         driver.get(path)
         # 서버에게 get 요청을 보냈으니 response를 기다려야함. html을 받는데 걸리는 최소시간 -> 1.5s
         time.sleep(1.5)
@@ -31,11 +32,19 @@ for i in range(1,400,50): ### 50page단위, 400page까지 있음
         # 반응 수집
         u_likeit = soup.find("ul", attrs={"class":"u_likeit_layer"})
         u_likeit_counts = u_likeit.find_all("span", attrs={"class":"u_likeit_list_count"}) #좋아요, 훈훈해요, 슬퍼요, 화나요, 후속기사원해요
-        reaction = [int(count.text.strip()) for count in u_likeit_counts] # [0,0,0,0,0]
+        reaction = [int(count.text.strip().replace(',', '')) for count in u_likeit_counts] # [0,0,0,0,0]
         
         # 댓글 수집 -> 댓글 더보기 페이지로 이동
-        total_num_repl = int(soup.find("span", attrs={"class": "u_cbox_count"}).text.strip())
-        num_repl = int(soup.find("span", attrs={"class": "u_cbox_info_txt"}).text.strip()) # 삭제 댓글 수 제외 
+        total_num_repl = soup.find("span", attrs={"class": "u_cbox_count"})
+        num_repl = soup.find("span", attrs={"class": "u_cbox_info_txt"}) # 삭제 댓글 수 제외 
+
+        if total_num_repl is None or num_repl is None: 
+            total_num_repl = 0
+            num_repl = 0
+        else: 
+            total_num_repl = int(total_num_repl.text.strip().replace(',', ''))
+            num_repl = int(num_repl.text.strip().replace(',', ''))
+         
         if total_num_repl == 0 or num_repl == 0: # 현재 댓글이 없음
             comment = []
         else: # 댓글 더보기로 이동
@@ -55,8 +64,8 @@ for i in range(1,400,50): ### 50page단위, 400page까지 있음
             cbox_unrecomms = driver.find_elements_by_css_selector("em.u_cbox_cnt_unrecomm") # 댓글 싫어요 수
 
             content = [content.text.strip().replace("\n", "") for content in cbox_contents]
-            recomm = [int(count.text.strip()) for count in cbox_recomms]
-            unrecomm = [int(count.text.strip()) for count in cbox_unrecomms]
+            recomm = [int(count.text.strip().replace(',', '')) for count in cbox_recomms]
+            unrecomm = [int(count.text.strip().replace(',', '')) for count in cbox_unrecomms]
 
             # zip()을 이용하여 content, recomm, unrecomm 합치기
             comment = [com for com in zip(content, recomm, unrecomm)] # [(c,r,u), ... ]
