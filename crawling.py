@@ -44,8 +44,6 @@ date = [
      ("2021.04.01", "2021.04.30"), ("2021.05.01", "2021.05.31"), ("2021.06.01", "2021.06.30"), \
          ("2021.07.01", "2021.07.09")]#, ("2021.08.01", "2021.08.31"), ("2021.09.01", "2021.09.30"), \
              #("2021.10.01", "2021.10.31"), ("2021.11.01", "2021.11.30"), ("2021.12.01", "2021.12.31")]
-# dateStart = "2018.01.01"
-# dateEnd = "2018.01.31" 
 
 for dateStart, dateEnd in date:
     #for helper in range(1, 3):  ###test : 10page까지
@@ -63,10 +61,7 @@ for dateStart, dateEnd in date:
         i = (100 * (helper - 1)) + 1
         #for page in range(i, 5+i): ### test : 5page씩
         for page in range(i, 100+i): # 50page 단위로 수집
-            # if page == 231: #page는 최대 400page 까지밖에 없음.
-            #     break
-
-            # keyword: sw교육 (query=sw교육)/ sort=1(최신순)/ ds=시작날짜/ de=끝날짜/ start=10단위로 증가(한페이지 10개)
+            # query=SW교육/ sort=2(오래된순)/ ds=시작날짜/ de=끝날짜/ start=10단위로 증가(한페이지 10개)
             start = (page - 1) * 10 + 1
             url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=' + query +'&sort=' + sort + '&ds=' + dateStart + '&de=' + dateEnd + '&nso=so%3Add%2Cp%3Afrom' + dateStart.replace('.', '') + 'to' + dateEnd.replace('.', '') + '&start={}'.format(start)
 
@@ -136,11 +131,11 @@ for dateStart, dateEnd in date:
                 print(soup.find("a", attrs={"class": "nclicks(atp_press)"}).find("img").get("title").strip())
                 press.append(soup.find("a", attrs={"class": "nclicks(atp_press)"}).find("img").get("title").strip())
 
-                contents.append(data) # 공백 제거한 data를 리스트에 저장.
+                # 공백 제거한 data를 리스트에 저장.
+                contents.append(data) 
                 titles.append(title)
                 dates.append(date)
-                
-                
+                          
         driver.close()
         # 최종 값
         print("paths: ", len(paths))
