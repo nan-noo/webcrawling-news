@@ -1,6 +1,7 @@
 import time
 from bs4 import BeautifulSoup as bs
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 import pandas as pd
 
 # sw교육 키워드로 검색한 네이버 뉴스의 path(링크), title, date, content, press(언론사) 수집
@@ -12,7 +13,7 @@ import pandas as pd
 
 # https://search.naver.com/search.naver?where=news&query=인공지능교육&sm=tab_opt&sort=1&photo=0&field=0&pd=3&ds=2021.07.06&de=2018.01.01&docid=&related=0&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so%3Add%2Cp%3Afrom20180101to20210706&is_sug_officeid=0
 
-query = "SW교육" # "SW교육", "AI교육", "ICT교육"
+query = "AI교육" # "SW교육", "AI교육", "ICT교육"
 sort = "2" # 오래된 순
 date = [
     ("2015.01.01", "2015.01.31"), ("2015.02.01", "2015.02.28"), ("2015.03.01", "2015.03.31"), \
@@ -101,7 +102,14 @@ for dateStart, dateEnd in date:
             # 현재 page의 모든 네이버뉴스의 해당 url에 접속하여 content를 파싱.
             for path in new_paths: 
                 print("current path: ", path)
-                driver.get(path)
+                try:
+                    driver.get(path)
+                except TimeoutException:
+                    print("timeout")
+                    paths.remove(path)
+                    path_len -= 1
+                    continue
+
                 soup = bs(driver.page_source, 'html.parser') # 각 url에 대하여 soup 객체를 새로 생성한다.
 
                 # contents 추가하기.
@@ -131,6 +139,7 @@ for dateStart, dateEnd in date:
                 contents.append(data) # 공백 제거한 data를 리스트에 저장.
                 titles.append(title)
                 dates.append(date)
+                
                 
         driver.close()
         # 최종 값
