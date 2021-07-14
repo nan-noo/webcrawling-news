@@ -8,7 +8,7 @@ import sys
 import pprint
  
 # 네이버 뉴스 url을 입력합니다.
-url = "https://news.naver.com/main/read.nhn?m_view=1&includeAllCount=true&mode=LSD&mid=shm&sid1=100&oid=422&aid=0000430957"
+url = "https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&sid1=101&oid=469&aid=0000343183"
  
 oid = url.split("oid=")[1].split("&")[0] #422
 aid = url.split("aid=")[1] #0000430957
@@ -19,7 +19,9 @@ header = {
 }
  
 while True:
-    c_url = "https://apis.naver.com/commentBox/cbox/web_neo_list_jsonp.json?ticket=news&templateId=default_society&pool=cbox5&_callback=jQuery1707138182064460843_1523512042464&lang=ko&country=&objectId=news422%2C0000430957&categoryId=&pageSize=20&indexSize=10&groupId=&listType=OBJECT&pageType=more&page=1&refresh=false&sort=FAVORITE"
+    c_url = "https://apis.naver.com/commentBox/cbox/web_neo_list_jsonp.json?ticket=news&templateId=default_society&pool=cbox5&_callback=jQuery1707138182064460843_1523512042464&lang=ko&country=&objectId=news" \
+    + oid + "%2C" + aid + "&categoryId=&pageSize=20&indexSize=10&groupId=&listType=OBJECT&pageType=more&page=" \
+    + str(page) + "&refresh=false&sort=FAVORITE"
     # 파싱하는 단계입니다.
     r = requests.get(c_url, headers=header)
     cont = BeautifulSoup(r.content, "html.parser")
@@ -53,5 +55,5 @@ def flatten(l):
  
 allCommetns = flatten(List)
  
-print(allCommetns)
+print(allCommetns[10])
 print(len(allCommetns))
