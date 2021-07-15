@@ -13,7 +13,7 @@ import pandas as pd
 
 # https://search.naver.com/search.naver?where=news&query=인공지능교육&sm=tab_opt&sort=1&photo=0&field=0&pd=3&ds=2021.07.06&de=2018.01.01&docid=&related=0&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so%3Add%2Cp%3Afrom20180101to20210706&is_sug_officeid=0
 
-query = "ICT교육" # "SW교육", "AI교육", "ICT교육"
+query = "소프트웨어교육" # "SW교육", "AI교육", "ICT교육"
 sort = "2" # 오래된 순
 date = [
     ("2015.01.01", "2015.01.31"), ("2015.02.01", "2015.02.28"), ("2015.03.01", "2015.03.31"), \
