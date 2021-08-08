@@ -2,4 +2,4 @@
 
 news topic : sw education, ai education
 
-topic modeling using CMT
+topic modeling using CTM
