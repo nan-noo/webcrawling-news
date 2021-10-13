@@ -1,5 +1,6 @@
 # webcrawling-news
 
-news topic : sw education, ai education
+crawling data: Naver news    
+news topic : 소프트웨어교육, SW교육    
 
 topic modeling using CTM
